@@ -5,7 +5,7 @@
 
 
 # Project Lighthouse — Movie Analytics
-> Apoiar a decisão de um estúdio (PProductions) sobre **qual tipo de filme produzir a seguir**, por meio de EDA, respostas a perguntas de negócio e modelos preditivos (incluindo previsão da **nota IMDb**).
+> Apoiar a decisão do estúdio (PProductions) sobre **qual tipo de filme produzir a seguir**, por meio de EDA, respostas a perguntas de negócio e modelos preditivos (incluindo previsão da **nota IMDb**).
 
 ---
 ## 1) Problema de Negócio
@@ -85,14 +85,21 @@ pip install -r requirements.txt
 
 ---
 ## 6) Principais Achados (EDA → Negócios)
-* **H1** Orçamento ↑ → Receita ↑ (⚠️ parcial): cresce a receita bruta, **não** garante ROI.
-* **H2** Popularidade antecipa bilheteria (✅): bom *leading indicator* de \$.
-* **H3** Nota IMDb ↑ → Receita ↑ (❌.): melhora longevidade, não garante bilheteria.
-* **H4** Runtime alto (>150m) tende a reduzir nota (❌ sem correlação).
-* **H5** Gênero importa (medianas diferentes), mas **dispersão** é alta (sem “gênero seguro”).
-* **H6** Diretor/Elenco ajudam receita; **ROI** depende de custo.
-* **H7** Recomendação p/ desconhecido: **alta nota + muitos votos** (consenso). Exemplos: **Dilwale Dulhania Le Jayenge (1995)** e **The Shawshank Redemption (1994)**
-* **H8** Após 2010: **engajamento ↑**, **mediana de receita ↓** (fragmentação/streaming).
+- **H1** Orçamento ↑ = Receita ↑ (**⚠️ parcial**): sobe a receita bruta; **ROI** não garantido.
+  
+- **H2** Popularidade antecipa bilheteria (**✅**): bom *leading indicator*.
+  
+- **H3** Nota IMDb ↑ = Receita ↑ (**❌**): ajuda longevidade/atração, não garante bilheteria.
+  
+- **H4** Runtime alto (>150m) → efeito na nota (**⚠️ fraco/indefinido**): evidência não robusta.
+  
+- **H5** Gênero importa (**✅com nuances**): **Animation/Family/Adventure** sustentam **receita e consistência**, mas exigem **alto orçamento** (ROI moderado); gêneros de **baixo custo** como **Horror/Crime/Mystery** tendem a **maior ROI**, porém **mais voláteis**. ⇒ A escolha depende do objetivo (**receita × ROI × prestígio**).
+  
+- **H6** Diretor/Elenco ajudam receita (**⚠️ parcial**); **ROI** depende do custo.
+  
+- **H7** Recomendação p/ desconhecido (**✅**): **alta nota + muitos votos** (ex.: *DDLJ* (1995), *Shawshank* (1994)).
+  
+- **H8** Pós-2010 (**✅**): **engajamento ↑**, **mediana de receita ↓** (fragmentação/streaming).
 
 > O quadro completo H1–H8 é exibido no final do `K02_eda_kaggle`.
 
@@ -111,14 +118,11 @@ pip install -r requirements.txt
 * **Modelo entregue:** `models/h11_imdb_rating_model.pkl` (**pipeline completo** `prep+model`).
 * **Case do enunciado (Shawshank):** previsto **6,34** vs. real **8,50** → erro ≈ **2× RMSE** (fora da média; provável efeito de prestígio/época e redução de cardinalidade em diretor/atores).
 
-
-7.1) Classificação de Gêneros (H9) — curto
-
-Artefato: models/h9_multilabel_pipeline.joblib
-Tarefa: prever gêneros a partir do overview (multirrótulo).
-Como foi treinado (resumo): TF-IDF (1–2-gram) → One-vs-Rest com classificador linear.
-Entrada/Saída: texto da sinopse → vetor binário (e, se disponível, probabilidades por gênero).
-
+### 7.1) Classificação de Gêneros (H9)
+* **Artefato:** models/h9_multilabel_pipeline.joblib
+* **Tarefa:** prever gêneros a partir do overview (multirrótulo).
+  * Como foi treinado (resumo): TF-IDF (1–2-gram) → One-vs-Rest com classificador linear.
+* **Entrada/Saída:** texto da sinopse → vetor binário (e probabilidades por gênero).
 
 ---
 ## 8) Respostas ao Desafio
@@ -153,7 +157,7 @@ pipe = obj["pipe"] if isinstance(obj, dict) else obj
 
 2. **Prepare os dados de entrada:**
 Use a função ``build_row_from_lighthouse(movie_dict, req_cols)`` para montar uma linha com as mesmas features do treino.
-/
+
 3. **Faça a Predição:**
 ```bash
 x_new = build_row_from_lighthouse(movie, req_cols).reindex(columns=req_cols)
@@ -161,7 +165,7 @@ pred = pipe.predict(x_new)[0]
 print(round(pred, 2))
 ```
 
-**Dica:** Veja exemplos completos no notebook K03_modelagem_treinamento.ipynb.
+**Dica:** Veja exemplos completos no notebook `K03_modelagem_treinamento.ipynb`.
 
 ---
 ## 11) Requisitos
