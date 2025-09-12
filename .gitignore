@@ -1,0 +1,22 @@
+cat > .gitignore << 'EOF'
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+*.env
+.DS_Store
+Thumbs.db
+
+# Rever - dados grandes
+data/intermediary/**
+data/raw/**
+#!data/raw/Lighthouse_imdb.csv
+#!data/raw/kaggle_movies_metadata.csv
+
+EOF
